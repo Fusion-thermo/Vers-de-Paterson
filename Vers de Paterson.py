@@ -1,5 +1,4 @@
 from tkinter import *
-import PIL.ImageGrab
 from time import time
 from PIL import ImageGrab
 
@@ -17,16 +16,13 @@ reglec="1040524"
 reglec="1044205"
 reglec="1505111"
 reglec="200"
+#reglec="1450451"
 regle=[int(i) for i in reglec]
 
 def vers(regle=regle):
 	global niveauzoom, etapes
 	debut=time()
 	# global iteration
-
-	# if iteration<0:
-	# 	iteration=int(Itera.get())
-	# 	Canevas.delete(ALL)
 
 	#Initalisation
 	chiffre_regle_en_cours=0
@@ -43,7 +39,6 @@ def vers(regle=regle):
 	dessin(milieu_x,milieu_y,x,y,couleurs[1])
 
 
-
 	#verif directions dispos
 	while 1:
 		etapes+=1
@@ -58,12 +53,9 @@ def vers(regle=regle):
 		temp.sort()
 		libre=''.join(temp)
 
-		#print(libre,occupe)
-
 		#Choix de la nouvelle direction
 		if len(libre)==0:
 			#plus de chemin dispo
-			#print("stop")
 			break
 		elif len(libre)==1:
 			#un seul chemin dispo
@@ -73,21 +65,17 @@ def vers(regle=regle):
 			#on connaît déjà cette situation
 			direction=situations_connues[libre][0]
 			couleur=situations_connues[libre][1]
-			#print("connu")
 		else:
 			#nouvelle situation, on utilise la règle suivante
 			direction=regle[chiffre_regle_en_cours]
 			chiffre_regle_en_cours=(chiffre_regle_en_cours + 1)%len(regle)
 			couleur=couleurs[chiffre_regle_en_cours]
 			situations_connues[libre]=(direction,couleur)
-			#print("nouveau")
 		
 		#on calcule la directiona absolue
-		#print(direction_precedente)
 		direction_absolue=(direction_absolue+direction)%6
 		direction_precedente=direction
 		chemins_parcourus.append((x+deplacement[direction_absolue][0]/2,y+deplacement[direction_absolue][1]/2))
-		#print(direction_precedente,direction,direction_absolue)
 
 		#Affichage
 		x2=x+deplacement[direction_absolue][0]
@@ -97,21 +85,9 @@ def vers(regle=regle):
 		y=y2
 	print(etapes,time()-debut)
 
-	#recursif = fenetre.after(50,vers)
-
-	# if iteration>0:
-	# 	iteration-=1
-	# 	numero.set(int(Itera.get())-iteration)
-	# else:
-	# 	fenetre.after_cancel(recursif)
-	# 	iteration=-1
-	# 	numero.set(0)
-
-	#fenetre.after_cancel(recursif)
 
 def dessin(x,y,x2,y2,couleur):
 	Canevas.create_line(x,y,x2,y2,fill=couleur)
-	#fenetre.after(100,dessin)
 
 def zoom_worms(niveau_zoom):
 	global niveauzoom
@@ -145,17 +121,6 @@ Worm.pack()
 BoutonSave = Button(fenetre,  text = 'Save',  command = save_vers)
 BoutonSave.pack()
 
-# Bouton1 = Button(fenetre,  text = 'Quitter',  command = fenetre.destroy)
-# Bouton1.pack()
-
-# Itera=StringVar()
-# Itera.set(10)
-
-# numero=StringVar()
-# numero.set(0)
-
-
-
 zoom=StringVar()
 zoom.set(1)
 zoom_vers=Scale(fenetre,  orient='horizontal',  from_=1,  to=10,  resolution=1,  \
@@ -163,6 +128,3 @@ tickinterval=2,  label='Zoom',  variable=zoom,  command=zoom_worms)
 zoom_vers.pack()
 
 fenetre.mainloop()
-
-# rgb = PIL.ImageGrab.grab().load()[milieu,milieu]
-# print(rgb)
